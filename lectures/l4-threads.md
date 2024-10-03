@@ -128,3 +128,105 @@ The Java thread model is designed to enable concurrent execution within a single
 - **Concurrency Utilities**: Java’s concurrency utilities help with more complex thread interactions.
 
 The Java thread model is a flexible and powerful system designed to handle multiple threads efficiently, enabling developers to build responsive, parallelized, and scalable applications.
+
+
+# Threads with Synchronization
+
+### Java Program: Summing Array Segments Using Threads with Synchronization
+
+```java
+class ArraySumThread extends Thread {
+    private int[] array;
+    private int start;
+    private int end;
+    private int partialSum = 0;
+    private static int totalSum = 0;
+
+    // Constructor to initialize thread with array segment
+    public ArraySumThread(int[] array, int start, int end) {
+        this.array = array;
+        this.start = start;
+        this.end = end;
+    }
+
+    // Thread task: calculate the sum of the array segment
+    @Override
+    public void run() {
+        for (int i = start; i < end; i++) {
+            partialSum += array[i];
+        }
+        // Synchronize access to shared resource (totalSum)
+        addPartialSum(partialSum);
+    }
+
+    // Synchronized method to ensure only one thread modifies totalSum at a time
+    private synchronized static void addPartialSum(int partialSum) {
+        totalSum += partialSum;
+    }
+
+    // Getter for total sum
+    public static int getTotalSum() {
+        return totalSum;
+    }
+}
+
+public class MultiThreadedArraySum {
+    public static void main(String[] args) {
+        // Define an array to sum
+        int[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        int numberOfThreads = 3; // Number of threads
+        int segmentSize = array.length / numberOfThreads; // Size of each segment
+
+        // Create and start threads
+        ArraySumThread[] threads = new ArraySumThread[numberOfThreads];
+        for (int i = 0; i < numberOfThreads; i++) {
+            int start = i * segmentSize;
+            int end = (i == numberOfThreads - 1) ? array.length : start + segmentSize;
+            threads[i] = new ArraySumThread(array, start, end);
+            threads[i].start();
+        }
+
+        // Wait for all threads to finish
+        for (int i = 0; i < numberOfThreads; i++) {
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Get and print the final total sum
+        System.out.println("Total sum of array: " + ArraySumThread.getTotalSum());
+    }
+}
+```
+
+### Explanation:
+
+1. **ArraySumThread Class**:
+    - Extends `Thread` and defines the task for each thread, which is to sum a portion (segment) of the array.
+    - The `run()` method contains the logic to calculate the partial sum of the array segment assigned to the thread.
+    - The `addPartialSum()` method is declared `synchronized`, ensuring that only one thread can add its partial sum to the shared `totalSum` at a time, avoiding race conditions.
+
+2. **Synchronization**:
+    - The critical section here is the `totalSum` variable, which is shared among multiple threads. To avoid race conditions, access to this variable is synchronized using the `synchronized` keyword on the `addPartialSum()` method.
+    - This ensures that when one thread is modifying `totalSum`, no other thread can interfere.
+
+3. **Main Program**:
+    - The array is divided into segments, and each thread is responsible for summing a segment.
+    - The `start()` method starts the execution of each thread.
+    - After starting all threads, the `join()` method is used to wait for all threads to finish before accessing the final result.
+    - Finally, the total sum is printed after all threads complete their execution.
+
+### Key Points of Thread Synchronization:
+- **Race Condition**: Without synchronization, multiple threads might try to update the `totalSum` simultaneously, leading to inconsistent results. Synchronizing the update ensures that only one thread modifies the shared resource at a time.
+- **`synchronized` Keyword**: This ensures mutual exclusion, preventing multiple threads from executing the critical section of the code simultaneously.
+- **Thread Communication**: The `join()` method ensures the main thread waits for all worker threads to complete before proceeding, ensuring the final result is accurate.
+
+### Example Output:
+
+```
+Total sum of array: 55
+```
+
+This program demonstrates how to use multithreading and synchronization to safely compute the sum of an array by dividing the work across multiple threads and ensuring proper synchronization when updating shared data.
