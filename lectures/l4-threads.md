@@ -301,3 +301,107 @@ public class ThreadDemo {
 ### Conclusion:
 - Use **`Thread` class** when you have simple, one-off tasks and don’t need to extend any other class.
 - Use **`Runnable` interface** when you need more flexibility, plan to reuse the task across multiple threads, or when your class already extends another class.
+
+
+### Java Program: Simulating a Simple Banking System with UPI Transactions
+
+In this program, multiple customers (threads) try to withdraw money from the same bank account. To ensure that the account balance is not overdrawn, we use **synchronization** to protect the withdrawal operation, ensuring thread safety.
+
+### Java Code
+
+```java
+// Bank Account class simulating a shared bank account
+class BankAccount {
+    private int balance;
+
+    public BankAccount(int balance) {
+        this.balance = balance;
+    }
+
+    // Synchronized method to withdraw money
+    public synchronized void withdraw(String customer, int amount) {
+        System.out.println(customer + " tries to withdraw: " + amount);
+
+        if (balance >= amount) {
+            System.out.println(customer + " proceeds with the withdrawal.");
+            try {
+                Thread.sleep(100);  // Simulate transaction delay
+            } catch (InterruptedException e) {
+                System.out.println("Transaction interrupted.");
+            }
+            balance -= amount;
+            System.out.println(customer + " successfully withdrew: " + amount);
+            System.out.println("Remaining balance: " + balance);
+        } else {
+            System.out.println(customer + " failed to withdraw. Insufficient balance.");
+        }
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+}
+
+// Customer class representing a customer making a withdrawal
+class Customer extends Thread {
+    private BankAccount account;
+    private int amount;
+    private String customerName;
+
+    public Customer(String customerName, BankAccount account, int amount) {
+        this.customerName = customerName;
+        this.account = account;
+        this.amount = amount;
+    }
+
+    @Override
+    public void run() {
+        account.withdraw(customerName, amount);
+    }
+}
+
+public class BankingSystem {
+    public static void main(String[] args) {
+        // Shared bank account with an initial balance
+        BankAccount account = new BankAccount(1000);
+
+        // Creating customer threads attempting to withdraw money
+        Customer customer1 = new Customer("Customer 1", account, 500);
+        Customer customer2 = new Customer("Customer 2", account, 700);
+        Customer customer3 = new Customer("Customer 3", account, 300);
+
+        // Starting the customer threads
+        customer1.start();
+        customer2.start();
+        customer3.start();
+    }
+}
+```
+
+### Explanation:
+1. **Synchronization**: 
+   - The `withdraw` method is marked `synchronized`, ensuring that only one thread can access it at a time, avoiding race conditions when multiple customers attempt to withdraw simultaneously.
+   
+2. **Shared Resource**: 
+   - All customer threads access the same `BankAccount` object, which holds the balance. Without synchronization, multiple withdrawals could result in an inconsistent state, like overdrawing the account.
+
+3. **Thread Safety**:
+   - Thread safety is achieved by ensuring that checking the balance and withdrawing money is done atomically (as one unit of work), which prevents two threads from withdrawing at the same time and causing overdraft.
+
+### Sample Output:
+```
+Customer 1 tries to withdraw: 500
+Customer 1 proceeds with the withdrawal.
+Customer 2 tries to withdraw: 700
+Customer 3 tries to withdraw: 300
+Customer 1 successfully withdrew: 500
+Remaining balance: 500
+Customer 3 proceeds with the withdrawal.
+Customer 3 successfully withdrew: 300
+Remaining balance: 200
+Customer 2 failed to withdraw. Insufficient balance.
+```
+
+### How Thread Safety is Ensured:
+- **Synchronized Block**: The `synchronized` keyword ensures that only one thread at a time can execute the `withdraw()` method on the same object. This prevents multiple threads from interfering with each other while accessing or modifying the shared `balance` variable.
+- **Atomic Operations**: The check for balance and the withdrawal are done together in the synchronized method, ensuring that no other thread can interrupt during this critical operation.
