@@ -230,3 +230,74 @@ Total sum of array: 55
 ```
 
 This program demonstrates how to use multithreading and synchronization to safely compute the sum of an array by dividing the work across multiple threads and ensuring proper synchronization when updating shared data.
+
+
+### Creation of a Thread using both the Thread class and the Runnable interface.
+
+### Program
+
+```java
+// Thread creation by extending the Thread class
+class MyThreadClass extends Thread {
+    @Override
+    public void run() {
+        for (int i = 1; i <= 5; i++) {
+            System.out.println("Thread using Thread class: " + i);
+            try {
+                Thread.sleep(500);  // Pausing execution for 500 milliseconds
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+}
+
+// Thread creation by implementing the Runnable interface
+class MyRunnableClass implements Runnable {
+    @Override
+    public void run() {
+        for (int i = 1; i <= 5; i++) {
+            System.out.println("Thread using Runnable interface: " + i);
+            try {
+                Thread.sleep(500);  // Pausing execution for 500 milliseconds
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+}
+
+public class ThreadDemo {
+    public static void main(String[] args) {
+        // Creating and starting a thread using the Thread class
+        MyThreadClass thread1 = new MyThreadClass();
+        thread1.start();
+
+        // Creating and starting a thread using the Runnable interface
+        Thread thread2 = new Thread(new MyRunnableClass());
+        thread2.start();
+    }
+}
+```
+
+### Comparison Between the Two Approaches
+
+#### 1. **Using `Thread` Class**
+   - **Advantages**:
+     - Simple to implement by directly overriding the `run()` method.
+     - You don’t need to create a separate `Runnable` object.
+   - **Disadvantages**:
+     - **Single Inheritance Limitation**: Since Java doesn't support multiple inheritance, your class can’t extend any other class if it extends `Thread`.
+     - Tightly couples the task logic with the thread itself, making code less reusable.
+
+#### 2. **Using `Runnable` Interface**
+   - **Advantages**:
+     - **Flexibility**: Your class can extend another class while implementing `Runnable`.
+     - **Separation of Concerns**: The task logic is separated from thread control, making it easier to reuse the same task in different threads or scenarios.
+     - More aligned with good object-oriented design principles.
+   - **Disadvantages**:
+     - Slightly more verbose: You need to pass the `Runnable` instance to a `Thread` object before starting the thread.
+
+### Conclusion:
+- Use **`Thread` class** when you have simple, one-off tasks and don’t need to extend any other class.
+- Use **`Runnable` interface** when you need more flexibility, plan to reuse the task across multiple threads, or when your class already extends another class.
