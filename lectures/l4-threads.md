@@ -405,3 +405,144 @@ Customer 2 failed to withdraw. Insufficient balance.
 ### How Thread Safety is Ensured:
 - **Synchronized Block**: The `synchronized` keyword ensures that only one thread at a time can execute the `withdraw()` method on the same object. This prevents multiple threads from interfering with each other while accessing or modifying the shared `balance` variable.
 - **Atomic Operations**: The check for balance and the withdrawal are done together in the synchronized method, ensuring that no other thread can interrupt during this critical operation.
+
+
+
+Inter-thread communication in Java allows threads to communicate with each other by sharing resources or signaling each other to ensure proper synchronization. This is important in multi-threaded environments where threads need to coordinate their execution.
+
+Java provides three key methods in the `Object` class to facilitate inter-thread communication:
+
+1. **`wait()`**: A thread can call `wait()` on an object to release the lock and enter a waiting state until another thread notifies it.
+
+2. **`notify()`**: Wakes up one of the threads waiting on the same object's lock. The awakened thread then tries to re-acquire the lock.
+
+3. **`notifyAll()`**: Wakes up all threads waiting on that object's lock. All awakened threads then compete to re-acquire the lock.
+
+### Example:
+```java
+class SharedResource {
+    synchronized void produce() throws InterruptedException {
+        System.out.println("Producing...");
+        wait(); // release lock and wait
+        System.out.println("Resumed after consumption");
+    }
+
+    synchronized void consume() {
+        System.out.println("Consuming...");
+        notify(); // notify waiting thread
+    }
+}
+
+public class InterThreadCommunication {
+    public static void main(String[] args) {
+        SharedResource resource = new SharedResource();
+
+        new Thread(() -> {
+            try { resource.produce(); } catch (InterruptedException e) { e.printStackTrace(); }
+        }).start();
+
+        new Thread(() -> {
+            try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+            resource.consume();
+        }).start();
+    }
+}
+```
+
+### Key points:
+- **Synchronized blocks** or methods are required to ensure the thread holds the object's monitor before calling `wait()`, `notify()`, or `notifyAll()`.
+- These methods help coordinate threads, especially in scenarios like producer-consumer problems.
+
+In Java, **Auto Boxing** is the automatic conversion of primitive types into their corresponding wrapper class objects, and **Unboxing** is the reverse. This helps bridge the gap between primitives and objects, particularly when dealing with collections, generics, or object-oriented programming.
+
+### Example:
+
+- **Auto Boxing**: Primitive to Wrapper
+  ```java
+  int i = 10;
+  Integer wrappedInt = i; // Auto-boxing
+  ```
+
+- **Unboxing**: Wrapper to Primitive
+  ```java
+  Integer wrappedInt = 10;
+  int i = wrappedInt; // Unboxing
+  ```
+
+This allows you to seamlessly use primitive types where objects are required (e.g., in collections like `ArrayList<Integer>`).
+
+### Benefits:
+- Reduces code complexity by eliminating manual conversions.
+
+
+In Java, Input/Output (I/O) operations are handled through classes in the `java.io` and `java.nio` packages. These allow reading and writing data (bytes or characters) to different types of data sources like files, networks, and memory.
+
+### Types of I/O in Java:
+
+1. **Byte Streams**:
+   - Used for reading and writing binary data (e.g., images, audio).
+   - Classes: `InputStream`, `OutputStream`.
+   - Examples:
+     - **FileInputStream**: Reads bytes from a file.
+     - **FileOutputStream**: Writes bytes to a file.
+
+   ```java
+   FileInputStream fis = new FileInputStream("input.txt");
+   int data = fis.read();
+   ```
+
+2. **Character Streams**:
+   - Used for reading and writing text data.
+   - Classes: `Reader`, `Writer`.
+   - Examples:
+     - **FileReader**: Reads characters from a file.
+     - **FileWriter**: Writes characters to a file.
+
+   ```java
+   FileReader fr = new FileReader("input.txt");
+   int data = fr.read();
+   ```
+
+3. **Buffered Streams**:
+   - Improve performance by buffering the data to reduce the number of I/O operations.
+   - Classes: `BufferedReader`, `BufferedWriter`, `BufferedInputStream`, `BufferedOutputStream`.
+
+   ```java
+   BufferedReader br = new BufferedReader(new FileReader("input.txt"));
+   String line = br.readLine();
+   ```
+
+4. **Data Streams**:
+   - For reading and writing primitive data types (int, float, etc.).
+   - Classes: `DataInputStream`, `DataOutputStream`.
+
+   ```java
+   DataOutputStream dos = new DataOutputStream(new FileOutputStream("data.bin"));
+   dos.writeInt(123);
+   ```
+
+5. **Object Streams**:
+   - Used to serialize and deserialize Java objects.
+   - Classes: `ObjectInputStream`, `ObjectOutputStream`.
+
+   ```java
+   ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("object.dat"));
+   oos.writeObject(new MyObject());
+   ```
+
+6. **Console I/O**:
+   - Reading from and writing to the console.
+   - Classes: `Scanner` (for input), `System.out` (for output).
+
+   ```java
+   Scanner sc = new Scanner(System.in);
+   String input = sc.nextLine();
+   System.out.println("You entered: " + input);
+   ```
+
+### Basic Methods:
+- **read()**: Reads a single byte/character or an array.
+- **write()**: Writes a single byte/character or an array.
+- **flush()**: Flushes the stream, forcing any buffered output to be written immediately.
+- **close()**: Closes the stream and releases resources.
+
