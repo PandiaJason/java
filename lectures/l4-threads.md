@@ -546,3 +546,190 @@ In Java, Input/Output (I/O) operations are handled through classes in the `java.
 - **flush()**: Flushes the stream, forcing any buffered output to be written immediately.
 - **close()**: Closes the stream and releases resources.
 
+
+In Java, reading and writing to the console can be done using standard I/O streams.
+
+Writing to the Console
+
+You can use System.out.print(), System.out.println(), or System.out.printf() to print to the console.
+
+// Using print (without newline)
+System.out.print("Hello, World!");
+
+// Using println (with newline)
+System.out.println("Hello, World!");
+
+// Using printf (formatted output)
+System.out.printf("Hello, %s!%n", "Jason");
+
+Reading from the Console
+
+For reading input, the Scanner class is commonly used.
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Reading a string
+        System.out.print("Enter your name: ");
+        String name = scanner.nextLine();
+        System.out.println("Hello, " + name + "!");
+
+        // Reading an integer
+        System.out.print("Enter your age: ");
+        int age = scanner.nextInt();
+        System.out.println("You are " + age + " years old.");
+
+        scanner.close();
+    }
+}
+
+Key Points:
+
+	•	System.out handles output.
+	•	Scanner reads input from various data types.
+
+The PrintWriter class in Java is used for writing formatted text to files or other output streams (like the console). It’s more flexible than System.out because it allows you to write to files, socket connections, or even memory buffers, with options for automatic flushing.
+
+Key Features:
+
+	•	Supports formatted output, like printf().
+	•	Can write to any Writer (like FileWriter, StringWriter, etc.).
+	•	Allows automatic flushing when certain methods are called (like println()).
+
+Example: Writing to a File Using PrintWriter
+
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            // Create a PrintWriter object to write to a file
+            PrintWriter writer = new PrintWriter(new FileWriter("output.txt"));
+
+            // Writing data to the file
+            writer.println("Hello, Jason!");
+            writer.printf("Your score is: %d%n", 100);
+
+            // Close the writer
+            writer.close();
+            System.out.println("Data written to file.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+Features of PrintWriter:
+
+	1.	println(): Writes data with a newline.
+	2.	printf(): Supports formatted output like in C.
+	3.	Automatic Flushing: Can be enabled by passing true in the constructor for flushing the buffer automatically after each write.
+
+Example with Auto-Flush:
+
+PrintWriter writer = new PrintWriter(new FileWriter("output.txt"), true);
+
+
+
+In Java, reading and writing files can be done using various classes from the java.io and java.nio packages. Here are some common ways to handle file I/O.
+
+Writing to a File
+
+	1.	Using FileWriter and BufferedWriter
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            // FileWriter writes to the file, BufferedWriter improves performance
+            BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
+            writer.write("Hello, Jason!");
+            writer.newLine(); // Adds a new line
+            writer.write("Welcome to Java File I/O.");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+	2.	Using PrintWriter
+
+import java.io.PrintWriter;
+import java.io.IOException;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            PrintWriter writer = new PrintWriter("output.txt");
+            writer.println("Hello, Jason!");
+            writer.println("Writing to a file with PrintWriter.");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+Reading from a File
+
+	1.	Using BufferedReader and FileReader
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("output.txt"));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+	2.	Using Files.readAllLines() (NIO)
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            List<String> lines = Files.readAllLines(Paths.get("output.txt"));
+            for (String line : lines) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+Key Points:
+
+	•	BufferedReader and BufferedWriter: Efficient for reading/writing text files.
+	•	PrintWriter: Useful for formatted output.
+	•	Files (from java.nio.file): Modern, simpler, and more efficient for reading and writing.
