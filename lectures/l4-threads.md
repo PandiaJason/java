@@ -549,10 +549,10 @@ In Java, Input/Output (I/O) operations are handled through classes in the `java.
 
 In Java, reading and writing to the console can be done using standard I/O streams.
 
-Writing to the Console
+# Writing to the Console
 
 You can use System.out.print(), System.out.println(), or System.out.printf() to print to the console.
-
+```java
 // Using print (without newline)
 System.out.print("Hello, World!");
 
@@ -585,22 +585,23 @@ public class Main {
         scanner.close();
     }
 }
+```
 
-Key Points:
+## Key Points:
 
 	•	System.out handles output.
 	•	Scanner reads input from various data types.
 
 The PrintWriter class in Java is used for writing formatted text to files or other output streams (like the console). It’s more flexible than System.out because it allows you to write to files, socket connections, or even memory buffers, with options for automatic flushing.
 
-Key Features:
+## Key Features:
 
 	•	Supports formatted output, like printf().
 	•	Can write to any Writer (like FileWriter, StringWriter, etc.).
 	•	Allows automatic flushing when certain methods are called (like println()).
 
-Example: Writing to a File Using PrintWriter
-
+# Example: Writing to a File Using PrintWriter
+```java
 import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -623,25 +624,25 @@ public class Main {
         }
     }
 }
-
-Features of PrintWriter:
+```
+## Features of PrintWriter:
 
 	1.	println(): Writes data with a newline.
 	2.	printf(): Supports formatted output like in C.
 	3.	Automatic Flushing: Can be enabled by passing true in the constructor for flushing the buffer automatically after each write.
 
-Example with Auto-Flush:
-
+## Example with Auto-Flush:
+```java
 PrintWriter writer = new PrintWriter(new FileWriter("output.txt"), true);
-
+```
 
 
 In Java, reading and writing files can be done using various classes from the java.io and java.nio packages. Here are some common ways to handle file I/O.
 
-Writing to a File
+# Writing to a File
 
 	1.	Using FileWriter and BufferedWriter
-
+```java
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -661,9 +662,9 @@ public class Main {
     }
 }
 
-
+```
 	2.	Using PrintWriter
-
+```java
 import java.io.PrintWriter;
 import java.io.IOException;
 
@@ -680,12 +681,12 @@ public class Main {
     }
 }
 
-
+```
 
 Reading from a File
 
 	1.	Using BufferedReader and FileReader
-
+```java
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -704,10 +705,10 @@ public class Main {
         }
     }
 }
-
+```
 
 	2.	Using Files.readAllLines() (NIO)
-
+```java
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.IOException;
@@ -726,7 +727,7 @@ public class Main {
     }
 }
 
-
+```
 
 Key Points:
 
