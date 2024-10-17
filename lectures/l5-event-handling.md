@@ -208,6 +208,133 @@ public class ActionListenerExample extends Frame implements ActionListener {
     }
 }
 ```
+# AWT
+ AWT (Abstract Window Toolkit)
+## 1. What is AWT?
+
+	•	AWT is the first graphical user interface (GUI) framework in Java, used to create window-based applications like buttons, text fields, and menus.
+	•	Think of it as a toolbox for building interactive programs with windows, buttons, and input fields.
+
+## 2. Key Components of AWT
+
+	•	Components: These are the basic building blocks like buttons, labels, and text fields.
+	•	Button: Used to create clickable buttons.
+	•	Label: Used to display text.
+	•	TextField: Allows users to input text.
+	•	Checkbox: Allows selecting options.
+### Example:
+```java
+Button b = new Button("Click Me");
+Label label = new Label("Hello, World!");
+TextField tf = new TextField();
+Checkbox cb = new Checkbox("I agree");
+```
+
+	•	Containers: These hold components.
+	•	Frame: A window with a title bar. It’s like a blank canvas where you put your components.
+	•	Panel: A smaller container that you can place inside a frame to organize components.
+
+### Example:
+```java
+Frame frame = new Frame("My AWT App");
+Panel panel = new Panel();
+```
+
+	•	Layouts: These organize the arrangement of components.
+	•	FlowLayout: Places components in a row.
+	•	BorderLayout: Divides the window into 5 areas (North, South, East, West, Center).
+	•	GridLayout: Places components in rows and columns.
+
+### Example:
+```
+frame.setLayout(new FlowLayout());
+```
+
+
+## 3. Event Handling
+
+	•	What is an Event?
+	•	An event is something that happens (like a button click).
+	•	Event Listeners:
+	•	ActionListener: Waits for a button click or menu selection.
+
+### Example of button click handling:
+```java
+button.addActionListener(new ActionListener() {
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("Button Clicked!");
+    }
+});
+```
+
+	•	How it works:
+	•	Event Source: The button or component that causes the event.
+	•	Event Listener: Code that reacts to the event.
+
+## 4. Complete Example: Simple AWT App
+
+Let’s build a simple app that has a button and a text field. When the button is clicked, it will display “Hello, World!” in the text field.
+```java
+import java.awt.*;
+import java.awt.event.*;
+
+public class SimpleAWTApp extends Frame implements ActionListener {
+    TextField textField;
+    Button button;
+
+    SimpleAWTApp() {
+        // Create components
+        textField = new TextField();
+        button = new Button("Click Me");
+
+        // Set layout and add components to frame
+        setLayout(new FlowLayout());
+        add(textField);
+        add(button);
+
+        // Add ActionListener to button
+        button.addActionListener(this);
+
+        // Frame settings
+        setSize(300, 300);
+        setVisible(true);
+    }
+
+    // Handle button click
+    public void actionPerformed(ActionEvent e) {
+        textField.setText("Hello, World!");
+    }
+
+    public static void main(String[] args) {
+        new SimpleAWTApp();
+    }
+}
+```
+## 5. Real-World Analogy
+
+Think of AWT like building a Lego model:
+
+	•	Components are the pieces (button, text field).
+	•	Containers are the base (Frame) where you place the pieces.
+	•	Event handling is the interaction, like pressing a button and making something happen (just like pushing a Lego vehicle to make it move).
+
+## 6. Practice Activity for Students
+
+Give students a simple task like:
+
+	•	Create a frame with a label, button, and text field.
+	•	When the button is clicked, display a message in the text field.
+
+### Summary:
+
+	•	Components: Basic building blocks (buttons, text fields).
+	•	Containers: Hold components (Frame, Panel).
+	•	Layouts: Organize components (FlowLayout, GridLayout).
+	•	Event Handling: Makes the application interactive (ActionListener).
+	•	Practical Example: Use a simple program to demonstrate how AWT works.
+
+By keeping the explanations simple and providing hands-on examples, students can grasp AWT easily.
+
 
 ## AWT Fundamentals (Abstract Window Toolkit):
 ![image](https://github.com/user-attachments/assets/4a3508b2-5c8a-4128-b5c4-178d448b363b)
