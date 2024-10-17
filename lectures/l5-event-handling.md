@@ -210,6 +210,8 @@ public class ActionListenerExample extends Frame implements ActionListener {
 ```
 
 ## AWT Fundamentals (Abstract Window Toolkit):
+![image](https://github.com/user-attachments/assets/4a3508b2-5c8a-4128-b5c4-178d448b363b)
+
 
 AWT is Java’s original GUI framework for creating platform-independent window-based applications. It provides components, containers, and event handling for developing graphical user interfaces.
 
