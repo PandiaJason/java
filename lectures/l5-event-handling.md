@@ -10,6 +10,8 @@ Event handling in Java is a mechanism that manages events, such as button clicks
 	3.	Event Listener: An interface that defines methods to respond to specific events, e.g., ActionListener.
 	4.	Event Handling Code: The code in the listener that executes when the event occurs.
 
+![image](https://github.com/user-attachments/assets/c98bd496-12dc-4845-8f24-bc54b4f518fe)
+
 ## Example:
 ```java
 import java.awt.*;
