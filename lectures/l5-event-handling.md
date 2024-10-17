@@ -1,6 +1,8 @@
 # Event Handling
 Event handling in Java is a mechanism that manages events, such as button clicks, key presses, or mouse movements. It is part of Java’s AWT (Abstract Window Toolkit) and Swing libraries.
 
+![image](https://github.com/user-attachments/assets/3bba69a6-a6a7-4536-b9a9-acfdc6c86608)
+
 ## Steps for Event Handling in Java:
 
 	1.	Event Source: The object that generates an event, e.g., a button.
