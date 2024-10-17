@@ -304,6 +304,7 @@ public class AWTExample extends Frame implements ActionListener {
 	•	Event Handling: Listeners like ActionListener respond to user interactions.
 
 By using AWT components and event handling, you can create interactive, platform-independent GUI applications.
+![image](https://github.com/user-attachments/assets/126a01f5-a7cb-4cc0-aa37-2e87a9236a7a)
 
 
 ## Case Study: ATM System
